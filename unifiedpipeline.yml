@@ -6,10 +6,10 @@ trigger:
 stages:
   - stage: Terragrunt_Dev
     displayName: Terragrunt Dev Stage
-    dependsOn: Terraform_Prod   # <-- keep/remove as needed
+    # no dependsOn → this is the root stage
     condition: succeeded()
     jobs:
-      - template: terragrunt/terragtunttemplate.yml
+      - template: terragtunttemplate.yml
         parameters:
           env: dev
           workingDir: terragrunt/envs/dev
@@ -19,7 +19,7 @@ stages:
     dependsOn: Terragrunt_Dev
     condition: succeeded()
     jobs:
-      - template: terragrunt/terragtunttemplate.yml
+      - template: terragtunttemplate.yml
         parameters:
           env: prod
           workingDir: terragrunt/envs/prod
