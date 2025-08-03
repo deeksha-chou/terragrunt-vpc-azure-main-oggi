@@ -1,0 +1,41 @@
+parameters:
+  - name: env
+    type: string
+  - name: workingDir
+    type: string
+
+jobs:
+  - job: Terragrunt_${{ parameters.env }}
+    displayName: Terragrunt ${{ parameters.env }} Steps
+    pool:
+      name: aws-agent
+    steps:
+      - checkout: self
+
+      - script: terraform fmt -check -recursive
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terraform Format
+
+      - script: |
+          echo "Initializing tflint..."
+          timeout 30s tflint --init
+          echo "Running tflint..."
+          timeout 120s tflint --disable-plugin-cache
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terraform Lint
+
+      - script: terragrunt init
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terragrunt Init
+
+      - script: terragrunt validate
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terragrunt Validate
+
+      - script: terragrunt plan
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terragrunt Plan
+
+      - script: terragrunt apply -auto-approve
+        workingDirectory: ${{ parameters.workingDir }}
+        displayName: Terragrunt Apply

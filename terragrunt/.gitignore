@@ -1,0 +1,29 @@
+# Terraform/Terragrunt generated directories
+.terraform/
+.terragrunt-cache/
+
+# Terraform state files (remember to never commit these!)
+*.tfstate
+*.tfstate.backup
+
+# Terraform plans and crash logs
+*.tfplan
+crash.log
+
+# Optional: ignore all tfvars unless explicitly allowed
+*.tfvars
+!dev.tfvars      # allow this one if needed
+!prod.tfvars     # allow this one if needed
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS-specific clutter
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+

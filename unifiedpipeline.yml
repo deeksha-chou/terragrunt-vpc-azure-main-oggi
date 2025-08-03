@@ -1,0 +1,43 @@
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: Terraform_Dev
+    displayName: Terraform Dev Stage
+    jobs:
+      - template: templates/terraform-steps.yml
+        parameters:
+          env: dev
+          workingDir: envs/dev
+
+  - stage: Terraform_Prod
+    displayName: Terraform Prod Stage
+    dependsOn: Terraform_Dev
+    condition: succeeded()
+    jobs:
+      - template: templates/terraform-steps.yml
+        parameters:
+          env: prod
+          workingDir: envs/prod
+
+  - stage: Terragrunt_Dev
+    displayName: Terragrunt Dev Stage
+    dependsOn: Terraform_Prod
+    condition: succeeded()
+    jobs:
+      - template: templates/terragrunt-steps.yml
+        parameters:
+          env: dev
+          workingDir: terragrunt/envs/dev
+
+  - stage: Terragrunt_Prod
+    displayName: Terragrunt Prod Stage
+    dependsOn: Terragrunt_Dev
+    condition: succeeded()
+    jobs:
+      - template: templates/terragrunt-steps.yml
+        parameters:
+          env: prod
+          workingDir: terragrunt/envs/prod
