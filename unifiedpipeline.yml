@@ -3,9 +3,10 @@ trigger:
     include:
       - main
 
+stages:
   - stage: Terragrunt_Dev
     displayName: Terragrunt Dev Stage
-    dependsOn: Terraform_Prod
+    dependsOn: Terraform_Prod   # <-- keep/remove as needed
     condition: succeeded()
     jobs:
       - template: terragtunttemplate.yml
