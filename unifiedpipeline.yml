@@ -9,7 +9,7 @@ stages:
     # no dependsOn → this is the root stage
     condition: succeeded()
     jobs:
-      - template: terragtunttemplate.yml
+      - template: terragrunt/terragtunttemplate.yml
         parameters:
           env: dev
           workingDir: terragrunt/envs/dev
@@ -19,7 +19,7 @@ stages:
     dependsOn: Terragrunt_Dev
     condition: succeeded()
     jobs:
-      - template: terragtunttemplate.yml
+      - template: terragrunt/terragtunttemplate.yml
         parameters:
           env: prod
           workingDir: terragrunt/envs/prod
